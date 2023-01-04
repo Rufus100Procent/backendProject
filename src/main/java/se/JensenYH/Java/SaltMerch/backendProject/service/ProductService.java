@@ -18,7 +18,7 @@ public class ProductService {
     }
 
     public List<Product> selectAll(String category){
-        return productRepository.selectAll();
+        return productRepository.selectAll(category);
     }
 
     public List<Product> selectAllOfCategory(String category){

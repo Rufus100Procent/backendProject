@@ -1,28 +1,35 @@
 package se.JensenYH.Java.SaltMerch.backendProject.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import se.JensenYH.Java.SaltMerch.backendProject.model.Product;
-
+import se.JensenYH.Java.SaltMerch.backendProject.service.ProductService;
 
 
 @RequestMapping("/api/v1")
 @RestController
 public class ProductController {
+
+    @Autowired
+    ProductService productService;
+
     @GetMapping("/products")
     public Product getAllProducts(){
 
-        Product product;
-        return new Product(1, "7", "producttest", "this is testing i repeat", "none");
+       productService.selectAll();
 
+        return null;
     }
 
     @GetMapping("/getAllProductsCategory")
-    public void getAllProductsCategory(){
+    public void getAllProductsCategory( @PathVariable String category){
 
+        productService.selectAll();
     }
 
     @GetMapping("/getOneSpecificProduct")
     public void getOneSpecificProduct(){
+
 
     }
 

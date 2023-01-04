@@ -24,7 +24,7 @@ public class CartRepository {
     public List<CartItem> selectAllItems(){
         //Done1
         // todo: write the SQL query for getting all columns and rows from the cart_items table
-        var sql = "SELECT * FROM cart_iteams";// <<<< todo: WRITE SQL QUERY HERE
+        var sql = "SELECT * FROM cart_items";// <<<< todo: WRITE SQL QUERY HERE
 
 
         RowMapper<CartItem> rm = (rs, rowNum) -> new CartItem(
