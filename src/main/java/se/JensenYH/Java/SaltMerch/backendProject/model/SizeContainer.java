@@ -1,5 +1,9 @@
 package se.JensenYH.Java.SaltMerch.backendProject.model;
 
+
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+
+@EntityScan
 public class SizeContainer {
 
     //prefare to use getters and setters rather than @JsonProperty

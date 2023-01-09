@@ -17,15 +17,18 @@ public class CartController {
     }
 
 
+    //Almost done
+    @PostMapping("/iteam/{add}")
+    public void  addIteamToTheCart(CartItem item) {
 
-    @PostMapping("&6")
-    public void  addIteamToTheCart() {
+        cartService.insertOrIncrementItem(item);
 
     }
 
-    @DeleteMapping
-    public void  removeIteamFromCart() {
-
+    //almost done
+    @DeleteMapping ("/iteam/{delete}")
+    public void  removeIteamFromCart(CartItem item) {
+        cartService.deleteOrDecrementItem(item);
     }
 
     @DeleteMapping("/tt")

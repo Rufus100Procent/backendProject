@@ -1,9 +1,14 @@
 package se.JensenYH.Java.SaltMerch.backendProject.model;
 
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+
+
+@EntityScan
 public class ColorVariant {
     //prefare to use getters and setters rather than @JsonProperty
 

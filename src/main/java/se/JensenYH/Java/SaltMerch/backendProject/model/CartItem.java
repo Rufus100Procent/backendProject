@@ -1,14 +1,17 @@
 package se.JensenYH.Java.SaltMerch.backendProject.model;
 
+import org.hibernate.annotations.Comment;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.data.annotation.Id;
 
-@EntityScan
+@Comment("")
 public class CartItem {
 
     //prefare to use getters and setters rather than @JsonProperty
     // todo: needs fields: int productId, String title, String color, String size, String previewImage, and int quantity
 
     private int quantity;
+    @Id
     private int productId;
     private String title;
     private String color;

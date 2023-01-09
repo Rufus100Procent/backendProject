@@ -22,5 +22,13 @@ public class CartService {
         return dB.selectAllItems();
     }
 
+    //done 2
+    public int insertOrIncrementItem(CartItem item) {
+        return  dB.insertOrIncrementItem(item);
+    }
 
-}
+    //done 3
+    public int deleteOrDecrementItem(CartItem item) {
+        return deleteOrDecrementItem(item);
+    }
+    }

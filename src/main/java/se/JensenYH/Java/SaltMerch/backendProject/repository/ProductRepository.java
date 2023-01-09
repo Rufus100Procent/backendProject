@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-public class ProductRepository {
+public class ProductRepository{
     @Autowired
     JdbcTemplate jdbcTemplate;
     // NOTE: LEAVE THIS RECORD AS IT IS!
@@ -38,7 +38,7 @@ public class ProductRepository {
     /** Reads all rows from the products table and returns them as a List of Products. */
     public List<Product> selectAll(String category) {
         // todo: write an SQL query that only selects all rows from the products table
-        String sql = "SELECT * FROM products RAWS";// <<<< todo: WRITE SQL QUERY HERE
+        String sql = "SELECT * FROM cart_items RAWS ";// <<<< todo: WRITE SQL QUERY HERE
         
         
         
