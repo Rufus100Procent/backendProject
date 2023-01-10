@@ -1,16 +1,18 @@
 package se.JensenYH.Java.SaltMerch.backendProject.model;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
-@EntityScan
 public class SizeContainer {
 
     //prefare to use getters and setters rather than @JsonProperty
 
     // todo: needs fields: String size, int stock
-    private String size;
-    private int stock;
+    @JsonProperty
+    public String size;
+    @JsonProperty
+    public int stock;
     
     // todo: all fields should be public and annotated with @JsonProperty
     

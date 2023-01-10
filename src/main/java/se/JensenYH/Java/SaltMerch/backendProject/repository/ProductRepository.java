@@ -79,45 +79,46 @@ public class ProductRepository{
                 INSERT INTO products (category, title, description, preview_image)
                 VALUES (?, ?, ?, ?) RETURNING id;""";
         RowMapper<Integer> rm = (rs, rowNum) -> rs.getInt("id");
-        List<Integer> pids = jdbcTemplate.query(sql, rm, category, prod.getTitle(),
-                                                prod.getDescription(), prod.getPreviewImage());
+        List<Integer> pids = jdbcTemplate.query(sql, rm, category, prod.title,
+                                                 prod.description, prod.previewImage);
         int pid = pids.size() > 0 ? pids.get(0) : -1;
         
         Product newProd = null;
         if (pid > -1) {
-            newProd = new Product();
-            newProd.setId(pid);
-            newProd.setCategory(category);
-            newProd.setTitle(newProd.getTitle());
-            newProd.setCategory(prod.getDescription());
-            newProd.setPreviewImage(prod.getPreviewImage());
+            newProd.id = pid;
+            newProd.category = category;
+            newProd.title = prod.title;
+            newProd.description = prod.description;
+            newProd.previewImage = prod.previewImage;
 
-            for (ColorVariant v : prod.getColorVariantList()) {
+            for (ColorVariant v : prod.colorVariantList) {
                 ColorVariant newv = new ColorVariant();
                 RowMapper<Integer> rmv = (rs, rowNum) -> rs.getInt("id");
                 var sqlv = """
                         INSERT INTO variants (color_name, product_id) VALUES (?, ?) RETURNING id;""";
-                List<Integer> vids = jdbcTemplate.query(sqlv, rmv, v.getColorName(), pid);
+                List<Integer> vids = jdbcTemplate.query(sqlv, rmv, v.colorName, pid);
                 int vid = vids.size() > 0 ? vids.get(0) : -1;
-                
-                if (vid > -1) {
-                    newv.setColorName(v.getColorName());
-                    
-                    for (String url : v.getImages()) {
+
+                if (vid > -1)
+                {
+                    newv.colorName = v.colorName;
+
+                    for (String url : v.images) {
                         var sqli = """
                                 INSERT INTO images (url, variant_id) VALUES (?, ?);""";
                         int ires = jdbcTemplate.update(sqli, url, vid);
                         if (ires == 1)
-                            newv.getImages().add(url);
+                            newv.images.add(url);
                     }
-                    for (SizeContainer s : v.getSizes()) {
+                    for (SizeContainer s : v.sizes)
+                    {
                         var sqls = """
                                 INSERT INTO sizes (size, stock, variant_id) VALUES (?, ?, ?);""";
-                        int sres = jdbcTemplate.update(sqls, s.getSize(), s.getStock(), vid);
+                        int sres = jdbcTemplate.update(sqls, s.size, s.stock, vid);
                         if (sres == 1)
-                            newv.getSizes().add(s);
+                            newv.sizes.add(s);
                     }
-                    newProd.getColorVariantList().add(newv);
+                    newProd.colorVariantList.add(newv);
                 }
             }
         }
@@ -132,12 +133,12 @@ public class ProductRepository{
         if (oldProd == null)
             return -9;
         else {
-            String title = prod.getTitle() != null && !prod.getTitle().isEmpty()
-                    ? prod.getTitle() : oldProd.getTitle();
-            String desc = prod.getDescription() != null && !prod.getDescription().isEmpty()
-                    ? prod.getDescription() : oldProd.getDescription();
-            String img = prod.getPreviewImage() != null && !prod.getPreviewImage().isEmpty()
-                    ? prod.getPreviewImage() : oldProd.getPreviewImage();
+            String title = prod.title != null && !prod.title.isEmpty()
+                    ? prod.title : oldProd.title;
+            String desc = prod.description != null && !prod.description.isEmpty()
+                    ? prod.description : oldProd.description;
+            String img = prod.previewImage != null && !prod.previewImage.isEmpty()
+                    ? prod.previewImage : oldProd.previewImage;
             var sql = """
                     UPDATE products
                     SET title = ?, description = ?, preview_image = ?
@@ -176,8 +177,8 @@ public class ProductRepository{
         System.out.println("variantsWImages = " + variantsWImages);
         for (VariantWImages variantWImages : variantsWImages) {
             ColorVariant colorVariant = new ColorVariant();
-            colorVariant.setColorName(variantWImages.colorName);
-            colorVariant.setSizes(getVariantSizes(variantWImages.id));
+            colorVariant.colorName = variantWImages.colorName;
+            colorVariant.sizes = getVariantSizes(variantWImages.id);
             try {
                 colorVariant.setImagesFromCSV(variantWImages.imagesCsv);
             }
@@ -186,7 +187,7 @@ public class ProductRepository{
                 System.out.println("Exception parsing images from csv; see stack trace");
                 e.printStackTrace();
             }
-            product.getColorVariantList().add(colorVariant);
+            product.colorVariantList.add(colorVariant);
         }
         
         return product;
@@ -237,23 +238,23 @@ public class ProductRepository{
         RowMapper<Integer> rmv = (rs, rowNum) -> rs.getInt("id");
         var sqlv = """
                 INSERT INTO variants (color_name, product_id) VALUES (?, ?) RETURNING id;""";
-        List<Integer> vids = jdbcTemplate.query(sqlv, rmv, colorVariant.getColorName(), productId);
+        List<Integer> vids = jdbcTemplate.query(sqlv, rmv, colorVariant.colorName, productId);
         int vid = vids.size() > 0 ? vids.get(0) : -1;
-        
+
         if (vid > -1) {
-            newv.setColorName(colorVariant.getColorName());
-            
-            for (String url : colorVariant.getImages()) {
+            newv.colorName = colorVariant.colorName;
+
+            for (String url : colorVariant.images) {
                 var sqli = "INSERT INTO images (url, variant_id) VALUES (?, ?);";
                 int ires = jdbcTemplate.update(sqli, url, vid);
                 if (ires == 1)
-                    newv.getImages().add(url);
+                    newv.images.add(url);
             }
-            for (SizeContainer s : colorVariant.getSizes()) {
+            for (SizeContainer s : colorVariant.sizes) {
                 var sqls = "INSERT INTO sizes (size, stock, variant_id) VALUES (?, ?, ?);";
-                int sres = jdbcTemplate.update(sqls, s.getSize(), s.getStock(), vid);
+                int sres = jdbcTemplate.update(sqls, s.size, s.stock, vid);
                 if (sres == 1)
-                    newv.getSizes().add(s);
+                    newv.sizes.add(s);
             }
         }
         return newv;

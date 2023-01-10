@@ -1,22 +1,26 @@
 package se.JensenYH.Java.SaltMerch.backendProject.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.Comment;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.annotation.Id;
 
-@Comment("")
 public class CartItem {
 
     //prefare to use getters and setters rather than @JsonProperty
     // todo: needs fields: int productId, String title, String color, String size, String previewImage, and int quantity
-
-    private int quantity;
-    @Id
-    private int productId;
-    private String title;
-    private String color;
-    private String size;
-    private  String previewImage;
+    @JsonProperty
+    public int quantity;
+    @JsonProperty
+    public int productId;
+    @JsonProperty
+    public String title;
+    @JsonProperty
+    public String color;
+    @JsonProperty
+    public String size;
+    @JsonProperty
+    public   String previewImage;
 
 
     // todo: all fields should be public and annotated with @JsonProperty

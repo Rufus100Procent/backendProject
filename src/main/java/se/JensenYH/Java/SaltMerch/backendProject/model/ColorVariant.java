@@ -1,5 +1,6 @@
 package se.JensenYH.Java.SaltMerch.backendProject.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 import java.util.ArrayList;
@@ -8,15 +9,17 @@ import java.util.List;
 
 
 
-@EntityScan
 public class ColorVariant {
     //prefare to use getters and setters rather than @JsonProperty
 
 
     // todo: needs fields: String colorName, List of String images, List of SizeContainer sizes
-    private String colorName;
-    private List<String> images;
-    private List<SizeContainer> sizes;
+    @JsonProperty
+    public String colorName;
+    @JsonProperty
+    public List<String> images;
+    @JsonProperty
+    public List<SizeContainer> sizes;
     // todo: all fields should be public and annotated with @JsonProperty
     
     // todo: needs 2 constructors:

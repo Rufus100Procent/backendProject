@@ -5,11 +5,15 @@ import org.springframework.data.relational.core.mapping.Embedded;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import se.JensenYH.Java.SaltMerch.backendProject.model.CartItem;
 import se.JensenYH.Java.SaltMerch.backendProject.service.CartService;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -18,40 +22,43 @@ public class CartController {
     @Autowired
     CartService cartService;
     @GetMapping("/selectall")
-    public ResponseEntity<List<CartItem>> selectAllIteams(){
+    public Object selectAllIteams(){
 
-        List<CartItem> cartItemList = cartService.selectAllItems();
-
-        if(cartItemList.isEmpty()){
-            return ResponseEntity.ok().header("list is emty").body(cartItemList);
-        }
-        return new  ResponseEntity<>(cartItemList, HttpStatus.OK);
+        return cartService.selectAllItems();
     }
 
 
     //Almost done
-    @PostMapping("/iteam/add")
-    @ResponseStatus(HttpStatus.CREATED)
-    public void  addIteamToTheCart(@RequestBody CartItem item) {
+    @PostMapping("/iteam")
+
+    public ResponseEntity<Object> addIteamToTheCart(@RequestBody CartItem item) {
 
         cartService.insertOrIncrementItem(item);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body("secesfully posted");
 
     }
 
     //almost done
-    @DeleteMapping ("/iteam/{delete}")
-    public void  removeIteamFromCart(CartItem item) {
-        cartService.deleteOrDecrementItem(item);
+    @DeleteMapping ("/iteam/{id}")
+    public ResponseEntity<?>  removeIteamFromCart(@PathVariable CartItem id ) {
+
+
+       if (cartService.deleteOrDecrementItem(id) >= 0){
+           return ResponseEntity.ok().build();
+       }
+        return ResponseEntity.internalServerError().build();
     }
 
     @DeleteMapping("/tt")
-    public void clearCart(){
+    public void deleteAllItems(){
+
 
     }
 
-    @PutMapping
-    public void reStockIteam(){
-
+    @PutMapping("//update/{id}")
+    public ResponseEntity<?> reStockIteam(){
+        return (ResponseEntity<?>) ResponseEntity.ok();
     }
 
 
