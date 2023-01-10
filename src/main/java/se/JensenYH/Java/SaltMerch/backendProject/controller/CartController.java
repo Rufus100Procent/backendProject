@@ -21,6 +21,8 @@ public class CartController {
 
     @Autowired
     CartService cartService;
+
+    //done
     @GetMapping("/selectall")
     public Object selectAllIteams(){
 
@@ -30,12 +32,11 @@ public class CartController {
 
     //Almost done
     @PostMapping("/iteam")
-
     public ResponseEntity<Object> addIteamToTheCart(@RequestBody CartItem item) {
 
-        cartService.insertOrIncrementItem(item);
+       Object d = cartService.insertOrIncrementItem(item);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body("secesfully posted");
+        return ResponseEntity.ok().body(d + "" + item);
 
     }
 
@@ -57,7 +58,7 @@ public class CartController {
     }
 
     @PutMapping("//update/{id}")
-    public ResponseEntity<?> reStockIteam(){
+    public ResponseEntity<?> reStockIteam(@PathVariable int id){
         return (ResponseEntity<?>) ResponseEntity.ok();
     }
 

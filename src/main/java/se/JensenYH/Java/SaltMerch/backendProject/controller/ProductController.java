@@ -1,12 +1,14 @@
 package se.JensenYH.Java.SaltMerch.backendProject.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import se.JensenYH.Java.SaltMerch.backendProject.model.Product;
 import se.JensenYH.Java.SaltMerch.backendProject.service.ProductService;
 
 import java.util.List;
+import java.util.Map;
 
 
 @RequestMapping("/api/v2")
@@ -17,9 +19,9 @@ public class ProductController {
     ProductService productService;
 
 
-    @GetMapping("/getAllProducts")
+    /////////////done
+    @GetMapping("/products")
     public ResponseEntity<List<Product>> getAllProducts(){
-
         List<Product> productList = productService.selectAll();
 
         return ResponseEntity.ok(productList);
@@ -27,47 +29,52 @@ public class ProductController {
     }
 
 
+    //endpoint done
+    @GetMapping("/productss/{id}")
+    public ResponseEntity<Object> getAllProductsCategory(@PathVariable int id){
 
-    @GetMapping(value = "/testing")
-    public ResponseEntity<List<Product>> ll(){
-        List<Product> product = productService.selectAll();
+      Object aa =  productService.selectAll(String.valueOf(id));
 
-        return ResponseEntity.status(555).body(product);
+        return ResponseEntity.ok(aa);
+    }
+
+    //done
+    //products/1
+    @GetMapping("/products/{id}")
+    public ResponseEntity getOneSpecificProduct(@PathVariable int id){
+
+        return ResponseEntity.ok(id);
+
     }
 
 
-    //endpoint done
-    @GetMapping("/getAllProductsCategory{category}")
-    public ResponseEntity<List<Product>> getAllProductsCategory(@PathVariable String category){
+    // done
+    //a/1
+    @PostMapping("/a/{id}")
+    public ResponseEntity<Object> createNewProduct(@RequestBody Product prod, @PathVariable int  id){
 
-        List<Product> product  = productService.selectAll(category);
+       Object obj =  productService.updateProductMeta(id, prod);
 
-        return ResponseEntity.ok(product);
+        return ResponseEntity.ok(obj  + " job is done");
     }
 
-    //endpoint done
-    @GetMapping("/getOneSpecificProduct")
-    public void getOneSpecificProduct(){
+    //done
+    @PutMapping("/product/{id}")
+    public ResponseEntity<Object> updateProductMetaData(@PathVariable int id, Product prod){
 
-
-    }
-
-    //endpoint done
-    @PostMapping("/createNewProduct")
-    public void createNewProduct(){
+        Object o =   productService.updateProductMeta(id, prod);
+        return ResponseEntity.ok(o);
 
     }
 
-    //endpoint done
-    @PutMapping("/updateProductMetaData")
-    public void updateProductMetaData(){
 
-    }
+    //done
+    @PostMapping("/product/{id}/product/{id2}")
+    public ResponseEntity createNewVariantForSpecificProduct (@PathVariable int  id,
+                                                    @PathVariable ("id2") int id2,
+                                                    @RequestBody Product product) {
 
-    //endpoint done
-    @PostMapping("/createNewVariantForSpecificProduct")
-    public void createNewVariantForSpecificProduct(){
-
+       return ResponseEntity.ok().body(id + "" + id2 +"" + product);
     }
 
     @PostMapping("specificSizeOfVariant")
@@ -75,10 +82,14 @@ public class ProductController {
 
     }
 
-    @DeleteMapping("/deleteProduct")
-    public void deleteProduct(){
 
+    //done
+    @DeleteMapping("/product/{id}")
+    public ResponseEntity deleteProduct(@PathVariable int id){
+
+        return ResponseEntity.ok().body(id + "" + " has been deleted");
     }
+
 
     @DeleteMapping("/deleteVariantOfProduct")
     public void deleteVariantOfProduct(){

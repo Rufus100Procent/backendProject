@@ -13,10 +13,12 @@ public class ProductService {
     @Autowired
     ProductRepository productRepository;
 
+    //done
     public List<Product> selectAll(){
         return productRepository.selectAll();
     }
 
+    //done
     public List<Product> selectAll(String category){
         return productRepository.selectAll(category);
     }
@@ -25,14 +27,16 @@ public class ProductService {
         return productRepository.selectAllOfCategory(category);
     }
 
-    public Product insertProductAndProps(Product prod, String category){
+        public Product insertProductAndProps(Product prod, String category){
         return productRepository.insertProductAndProps(prod,category);
     }
 
+    public int updateProductMeta(int id, Product prod) {
 
-    public int updateProductMeta(int id, Product prod){
-        return productRepository.updateProductMeta(id, prod);
+        return productRepository.updateProductMeta(id,prod);
     }
+
+
 
     public int deleteProduct(int id){
         return productRepository.deleteProduct(id);
