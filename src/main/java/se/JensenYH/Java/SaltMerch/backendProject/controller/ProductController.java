@@ -1,6 +1,7 @@
 package se.JensenYH.Java.SaltMerch.backendProject.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,48 +29,40 @@ public class ProductController {
 
     }
 
+    //endpoint done
+    @GetMapping("/products/{category}")
+    public ResponseEntity<List<Product>> getAllProductsCategory(@PathVariable ("category") String catagory){
+
+        List<Product> products = productService.selectAll(catagory);
+
+        return ResponseEntity.ok(products);
+    }
+
 
     //endpoint done
-    @GetMapping("/productss/{id}")
-    public ResponseEntity<Object> getAllProductsCategory(@PathVariable int id){
+    @GetMapping("/products/{id}")
+    public Product getAllProductsCategory(@PathVariable int id){
 
       Object aa =  productService.selectAll(String.valueOf(id));
 
-        return ResponseEntity.ok(aa);
+        return (Product) aa;
     }
 
-    //done
-    //products/1
-    @GetMapping("/products/{id}")
-    public ResponseEntity getOneSpecificProduct(@PathVariable int id){
-
-        return ResponseEntity.ok(id);
-
-    }
 
 
     // done
-    //a/1
-    @PostMapping("/a/{id}")
-    public ResponseEntity<Object> createNewProduct(@RequestBody Product prod, @PathVariable int  id){
+    @PostMapping("/Prodocts/{catagory}")
+    public ResponseEntity<Product> createNewProduct(@RequestBody Product prod, @PathVariable("catagory") String catagory){
 
-       Object obj =  productService.updateProductMeta(id, prod);
+       Object obj =  productService.updateProductMeta(Integer.parseInt(catagory), prod);
 
-        return ResponseEntity.ok(obj  + " job is done");
-    }
-
-    //done
-    @PutMapping("/product/{id}")
-    public ResponseEntity<Object> updateProductMetaData(@PathVariable int id, Product prod){
-
-        Object o =   productService.updateProductMeta(id, prod);
-        return ResponseEntity.ok(o);
-
+        return new ResponseEntity<>((Product) obj, HttpStatus.CREATED);
     }
 
 
+
     //done
-    @PostMapping("/product/{id}/product/{id2}")
+    @PostMapping("/products/{id}/product/{id2}")
     public ResponseEntity createNewVariantForSpecificProduct (@PathVariable int  id,
                                                     @PathVariable ("id2") int id2,
                                                     @RequestBody Product product) {
@@ -77,9 +70,10 @@ public class ProductController {
        return ResponseEntity.ok().body(id + "" + id2 +"" + product);
     }
 
-    @PostMapping("specificSizeOfVariant")
-    public void specificSizeOfVariant(){
+    @PutMapping("/products/{id}")
+    public Product specificSizeOfVariant(@PathVariable int id){
 
+        return new Product();
     }
 
 

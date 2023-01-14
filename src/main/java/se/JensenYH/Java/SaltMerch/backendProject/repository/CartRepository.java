@@ -29,11 +29,11 @@ public  class CartRepository {
 
         RowMapper<CartItem> rm = (rs, rowNum) -> new CartItem(
                 rs.getInt("product_id"),
-                rs.getInt("quantity"),
                 rs.getString("title"),
                 rs.getString("color"),
                 rs.getString("size"),
-                rs.getString("preview_image"));
+                rs.getString("preview_image"),
+                rs.getInt("quantity"));
         // NOTE: you can leave everything else here as it is
         return jdbcTemplate.query(sql,rm);
     }
@@ -151,7 +151,7 @@ public  class CartRepository {
             paramMap.put("pid", item.productId);
             paramMap.put("size", item.size);
             paramMap.put("color", item.color);
-            paramMap.put("qty", item.quantity);
+            paramMap.put("quantity", item.quantity);
             int res = new NamedParameterJdbcTemplate(jdbcTemplate).update(sql, paramMap);
             System.out.println("res = " + res);
         }
