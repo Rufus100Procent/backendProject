@@ -1,13 +1,12 @@
 package se.JensenYH.Java.SaltMerch.backendProject.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import se.JensenYH.Java.SaltMerch.backendProject.model.CartItem;
+import se.JensenYH.Java.SaltMerch.backendProject.Model.CartItem;
 
 
 

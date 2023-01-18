@@ -5,10 +5,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
-import se.JensenYH.Java.SaltMerch.backendProject.model.CartItem;
-import se.JensenYH.Java.SaltMerch.backendProject.model.ColorVariant;
-import se.JensenYH.Java.SaltMerch.backendProject.model.Product;
-import se.JensenYH.Java.SaltMerch.backendProject.model.SizeContainer;
+import se.JensenYH.Java.SaltMerch.backendProject.Model.ColorVariant;
+import se.JensenYH.Java.SaltMerch.backendProject.Model.Product;
+import se.JensenYH.Java.SaltMerch.backendProject.Model.SizeContainer;
 
 
 import java.util.ArrayList;
@@ -38,7 +37,7 @@ public class ProductRepository{
     /** Reads all rows from the products table and returns them as a List of Products. */
     public List<Product> selectAll(String category) {
         // todo: write an SQL query that only selects all rows from the products table
-        String sql = "SELECT * FROM cart_items RAWS ";// <<<< todo: WRITE SQL QUERY HERE
+        String sql = "SELECT * FROM products";// <<<< todo: WRITE SQL QUERY HERE
         
         
         
@@ -52,7 +51,7 @@ public class ProductRepository{
         // NOTE: have in mind that the column name that corresponds to previewImage is preview_image
         RowMapper<Product> rm = (rs,rowNum) -> new Product(
                 rs.getInt("id"),
-                rs.getString("category,"),
+                rs.getString("category"),
                 rs.getString("title"),
                 rs.getString("description"),
                 rs.getString("preview_image"));
@@ -85,6 +84,7 @@ public class ProductRepository{
         
         Product newProd = null;
         if (pid > -1) {
+            newProd = new Product();
             newProd.id = pid;
             newProd.catagory = category;
             newProd.title = prod.title;
@@ -149,12 +149,14 @@ public class ProductRepository{
     
     // todo: this method needs you to write its SQL query and execute it
     // NOTE: optional
-    /** Deletes a specific row from the products table. */
+    /**
+     * Deletes a specific row from the products table.
+     */
     public int deleteProduct(int id) {
         // todo: write the SQL query for deleting a single product
         var sql = """
-                DELETE FROM Employees
-                WHERE RAW = ?
+                DELETE FROM products
+                WHERE id = ?
                 """;// <<<< todo: WRITE SQL QUERY HERE
         
         
@@ -266,7 +268,7 @@ public class ProductRepository{
     public int deleteVariant(int productId, String color) {
         // todo: write the SQL query for deleting a variant
         //  with specific product_id and color_name
-        var sql = "DELETE FROM products WHERE id IN (?,?); ";// <<<< todo: WRITE SQL QUERY HERE
+        var sql = "DELETE FROM variants WHERE id  ? AND color  = ?";;// <<<< todo: WRITE SQL QUERY HERE
     
     
         // todo: execute the query while also passing the id as a parameter
@@ -291,7 +293,7 @@ public class ProductRepository{
     // NOTE: NO NEED TO MODIFY THIS METHOD!
     /** Utility function used in other methods.
      *      Only reads a product's metadata. */
-    private Product getProductBase(int productId) {
+    public Product getProductBase(int productId) {
         RowMapper<Product> rm = (rs, rowNum) -> new Product(
                 rs.getInt("id"),
                 rs.getString("category"),

@@ -1,7 +1,6 @@
-package se.JensenYH.Java.SaltMerch.backendProject.model;
+package se.JensenYH.Java.SaltMerch.backendProject.Model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -1,9 +1,6 @@
-package se.JensenYH.Java.SaltMerch.backendProject.model;
+package se.JensenYH.Java.SaltMerch.backendProject.Model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.hibernate.annotations.Comment;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.data.annotation.Id;
 
 public class CartItem {
 
@@ -50,5 +47,46 @@ public class CartItem {
     //  1. empty constructor
     //  2. constructor with productId, title, color, size, and previewImage
     //  3. constructor with productId, title, color, size, previewImage, and quantity
+
+
+    public int getProductId() {
+        return productId;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
+    }
+
+    public String getPreviewImage() {
+        return previewImage;
+    }
+
+    public void setPreviewImage(String previewImage) {
+        this.previewImage = previewImage;
+    }
 }
 

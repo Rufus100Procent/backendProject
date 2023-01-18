@@ -2,19 +2,16 @@ package se.JensenYH.Java.SaltMerch.backendProject.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import se.JensenYH.Java.SaltMerch.backendProject.model.CartItem;
+import se.JensenYH.Java.SaltMerch.backendProject.Model.CartItem;
 
 import se.JensenYH.Java.SaltMerch.backendProject.repository.CartRepository;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 @Service
-public class CartService {
+    public class CartService {
 
     @Autowired
     CartRepository dB;
@@ -27,9 +24,9 @@ public class CartService {
     }
 
     //done 2
-    public int insertOrIncrementItem(CartItem item) {
+    public List<CartItem> insertOrIncrementItem(CartItem item) {
 
-      return   dB.insertOrIncrementItem(item);
+     return null;
     }
 
     //done 3
