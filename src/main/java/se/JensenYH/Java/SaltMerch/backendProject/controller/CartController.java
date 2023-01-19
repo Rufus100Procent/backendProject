@@ -21,17 +21,12 @@ public class CartController {
     @GetMapping("/selectall")
     public List<CartItem> selectAllIteams(CartItem item){
 
+
         return cartService.selectAllItems();
     }
 
 
     //Almost done
-    @GetMapping("/carts/{id}")
-
-    public ResponseEntity<List<CartItem>> addIteamToTheCart(@PathVariable  int id) {
-
-        return new ResponseEntity<>(cartService.selectAllItems() , HttpStatus.OK);
-    }
 
     @PatchMapping ("/carts/{id}{action}")
     ////PATCH /api/v1/carts/{id}?action=add
@@ -48,6 +43,7 @@ public class CartController {
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
 
     @DeleteMapping("/carts{id}")
     public ResponseEntity<Integer> deleteAllItems(@PathVariable CartItem id){

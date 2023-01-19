@@ -8,7 +8,6 @@ import se.JensenYH.Java.SaltMerch.backendProject.Model.CartItem;
 import se.JensenYH.Java.SaltMerch.backendProject.repository.CartRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
     public class CartService {
