@@ -24,9 +24,10 @@ import java.util.Optional;
     }
 
     //done 2
-    public List<CartItem> insertOrIncrementItem(CartItem item) {
+    public int insertOrIncrementItem(CartItem item) {
 
-     return null;
+        return dB.insertOrIncrementItem(item);
+
     }
 
     //done 3

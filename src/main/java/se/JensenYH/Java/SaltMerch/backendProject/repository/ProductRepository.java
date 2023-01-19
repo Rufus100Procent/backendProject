@@ -242,7 +242,6 @@ public class ProductRepository{
                 INSERT INTO variants (color_name, product_id) VALUES (?, ?) RETURNING id;""";
         List<Integer> vids = jdbcTemplate.query(sqlv, rmv, colorVariant.colorName, productId);
         int vid = vids.size() > 0 ? vids.get(0) : -1;
-
         if (vid > -1) {
             newColorVariant.colorName = colorVariant.colorName;
 

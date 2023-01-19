@@ -63,8 +63,6 @@ public class ProductService {
 
 
     public int deleteProduct(int id){
-
-
        return productRepository.deleteProduct(id);
     }
 

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import se.JensenYH.Java.SaltMerch.backendProject.Model.ColorVariant;
 import se.JensenYH.Java.SaltMerch.backendProject.Model.Product;
 import se.JensenYH.Java.SaltMerch.backendProject.service.CartService;
 import se.JensenYH.Java.SaltMerch.backendProject.service.ProductService;
@@ -22,20 +23,17 @@ public class ProductController {
     CartService cartService;
 
 
-    /////////////done
-    //////working
+    //Working
     @GetMapping("/products")
-    public List<Product> getAllProducts(){
+    public List<Product> getAllProducts() {
         return productService.selectAll();
     }
 
 
-    /////// done
-    ////// /products/hats
-    ///// unkown problem
+    ///working
     @GetMapping("/products/{var}")
-    public Object getAllProductsCategory(@PathVariable ("var") String var){
-        switch (var){
+    public Object getAllProductsCategory(@PathVariable("var") String var) {
+        switch (var) {
             case "hats":
 
             case "jackets":
@@ -52,84 +50,92 @@ public class ProductController {
 
     }
 
-    /////// done
-    //// /products/1
-    /////need fixing
-    ////there is collision
-    /*@GetMapping("/products/{id}")
-    public ResponseEntity<List<Product>> getProductById(@PathVariable int id){
 
-       Object obj =  productService.selectAll(String.valueOf(Integer.valueOf(id)));
-
-       return ResponseEntity.ok((List<Product>) obj);
-    }
-*/
-
-
-    //// done
-    //// /products/hats
-    ///// optional
     //working
     @PostMapping("/products/{catagory}")
     public ResponseEntity<Product> createNewProduct(@RequestBody Product prod,
-                                                    @PathVariable("catagory") String catagory){
+                                                    @PathVariable("catagory") String catagory) {
 
-       Product obj =  productService.insertProductAndProps(prod, catagory);
+        Product obj = productService.insertProductAndProps(prod, catagory);
 
-       if(catagory != null && !catagory.isEmpty() ){
+        if (catagory != null && !catagory.isEmpty()) {
 
-           return new ResponseEntity<>(obj, HttpStatus.CREATED);
-       } else {
+            return new ResponseEntity<>(obj, HttpStatus.CREATED);
+        } else {
 
-           throw new RuntimeException("cant create " + catagory + " check your json");
-       }
+            throw new RuntimeException("cant create " + catagory + " check your json");
+        }
 
     }
 
 
-    ///// done
-    ///// /products/1
-    ///working????????
+    //working
     @PutMapping("/products/{id}")
     public ResponseEntity<Integer> specificSizeOfVariant(@PathVariable int id,
-                                                         @RequestBody Product product){
+                                                         @RequestBody Product product) {
 
         int product1 = productService.updateProductMeta(id, product);
 
 
-        System.out.println(" " + id +  product);
         return ResponseEntity.ok(product1);
 
     }
 
-    //done
-
+    //almost done??
+    //violates not-null constraint, without the try catch
     @PostMapping("/products/{id}/variants")
-    public ResponseEntity createNewVariantForSpecificProduct (@PathVariable int id, Product product) {
+    public ResponseEntity<String> createNewVariantForSpecificProduct(@PathVariable int id, ColorVariant colorVariant) {
 
-       return null;
+
+        try {
+            ColorVariant obj = productService.addvarient(id, colorVariant);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (Exception e) {
+            System.out.println("100");
+        }
+        throw new RuntimeException("Error");
+
     }
 
-    @PutMapping("/products/{id}/variants/stock?size={size}&color={green}&quantity={quantity}")
+    @PutMapping("/products/{id}/variants/stock/{size}/{color}/{quantity}")
     //////optional
     public void Restock(@PathVariable int id,
-                        @RequestParam ("stock") int size,
-                        @PathVariable ("size") int s){
+                        @RequestParam("stock") int size,
+                        @PathVariable("color") int color,
+                        @PathVariable("quantity") int quantity) {
 
+        System.out.println("h");
     }
 
-    //done
+    //working
     @DeleteMapping("/products/{id}")
-    public ResponseEntity<Integer> deleteProduct(@PathVariable("id") int id){
+    public ResponseEntity<Object> deleteProduct(@PathVariable("id") int id) {
 
-        int deletProduct = productService.deleteProduct(id);
-        //returns 200
-       return new ResponseEntity<>(deletProduct, HttpStatus.CREATED);
+        if (productService.deleteProduct(id) >= 0) {
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.internalServerError().build();
     }
 
 
     @DeleteMapping("products/{productId}/variants/{variantId}")
-    public void deleteVariantOfProduct(){
+    public ResponseEntity<String> deleteVariantOfProduct(@PathVariable("productId") Integer productId,
+                                                         @PathVariable("variantId") Integer variantId) {
+        int obj = productService.deleteVariant(productId, String.valueOf(variantId));
+
+        switch (obj) {
+            default:
+            case 1:
+                return ResponseEntity.ok().build();
+            case 0:
+                return ResponseEntity.badRequest().body("doesnt exist");
+            case -1:
+                return ResponseEntity.badRequest().body("cant delete what doesnt exist");
+            case -2:
+                return ResponseEntity.badRequest().body("cant delete what doesnt exist");
+
+        }
+
 
     }
 
