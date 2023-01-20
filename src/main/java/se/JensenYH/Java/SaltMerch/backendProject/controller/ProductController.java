@@ -11,7 +11,13 @@ import se.JensenYH.Java.SaltMerch.backendProject.service.ProductService;
 
 import java.util.List;
 
-
+/*
+show all product in the database,
+find a single product either by ID or name,
+create new product,
+update an existing product,
+and delete existing product
+ */
 @CrossOrigin("http://localhost:3010")
 @RequestMapping("/api/v1")
 @RestController

@@ -36,10 +36,6 @@ public  class CartRepository {
         // NOTE: you can leave everything else here as it is
         return jdbcTemplate.query(sql,rm);
     }
-    public List<CartItem> sellectCategoryById(CartItem item){
-        return selectAllItems();
-    }
-
 
 
         // NOTE: NO NEED TO MODIFY THIS METHOD!
