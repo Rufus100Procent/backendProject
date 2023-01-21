@@ -19,6 +19,7 @@ import java.util.List;
 
     //Done 1
     public List<CartItem> selectAllItems(){
+
         return dB.selectAllItems();
     }
 
@@ -38,9 +39,8 @@ import java.util.List;
 
     }
 
-    public void deleteAllItems(boolean restock){
-        dB.deleteAllItems(restock);
+    public void deletAllIteams(boolean buyout) {
+
+        dB.deleteAllItems(buyout);
     }
-
-
 }

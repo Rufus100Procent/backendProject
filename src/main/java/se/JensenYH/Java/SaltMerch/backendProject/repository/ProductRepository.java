@@ -220,7 +220,7 @@ public class ProductRepository{
      *      Reads a row from sizes table. */
     public List<SizeContainer> getVariantSizes(int variantId) {
         var sql = """
-                SELECT size, stock
+                SELECT sizes, stock
                 FROM variants v
                 INNER JOIN sizes AS s
                 ON v.id = s.variant_id
@@ -252,7 +252,7 @@ public class ProductRepository{
                     newColorVariant.images.add(url);
             }
             for (SizeContainer s : colorVariant.size) {
-                var sqls = "INSERT INTO sizes (size, stock, variant_id) VALUES (?, ?, ?);";
+                var sqls = "INSERT INTO sizes (sizes, stock, variant_id) VALUES (?, ?, ?);";
                 int sres = jdbcTemplate.update(sqls, s.size, s.stock, vid);
                 if (sres == 1)
                     newColorVariant.size.add(s);

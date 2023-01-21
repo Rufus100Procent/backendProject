@@ -26,7 +26,7 @@ public  class CartRepository {
         // todo: write the SQL query for getting all columns and rows from the cart_items table
         var sql = "SELECT * FROM cart_items";// <<<< todo: WRITE SQL QUERY HERE
 
-        RowMapper<CartItem> rm = (rs, rowNum) -> new CartItem(
+        RowMapper<CartItem> rm = (rs, rowNum) -> new  CartItem(
                 rs.getInt("product_id"),
                 rs.getString("title"),
                 rs.getString("color"),

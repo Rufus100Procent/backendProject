@@ -1,24 +1,38 @@
 package se.JensenYH.Java.SaltMerch.backendProject;
 
 import org.assertj.core.api.AbstractBigDecimalAssert;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import se.JensenYH.Java.SaltMerch.backendProject.Model.CartItem;
 import se.JensenYH.Java.SaltMerch.backendProject.Model.Product;
+import se.JensenYH.Java.SaltMerch.backendProject.controller.ProductController;
 import se.JensenYH.Java.SaltMerch.backendProject.repository.CartRepository;
 import se.JensenYH.Java.SaltMerch.backendProject.repository.ProductRepository;
 import se.JensenYH.Java.SaltMerch.backendProject.service.CartService;
 import se.JensenYH.Java.SaltMerch.backendProject.service.ProductService;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import static jdk.internal.jimage.ImageReaderFactory.get;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 class MainTests {
@@ -74,4 +88,8 @@ class MainTests {
 
 	}
 
+
+
 }
+
+
