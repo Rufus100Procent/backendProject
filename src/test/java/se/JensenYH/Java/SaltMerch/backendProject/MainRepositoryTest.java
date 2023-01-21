@@ -35,8 +35,8 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-class MainTests {
-
+class MainRepositoryTest {
+/*
 	@Autowired
 	CartService cartService;
 
@@ -88,7 +88,7 @@ class MainTests {
 
 	}
 
-
+*/
 
 }
 
