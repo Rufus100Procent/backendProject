@@ -53,9 +53,9 @@ public  class CartRepository {
                     WHERE product_id = (:pid) AND color_name = (:color) AND size = (:size));
                 """;
         Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("pid", item.productId);
-        paramMap.put("size", item.size);
-        paramMap.put("color", item.color);
+        paramMap.put("pid", item.getProductId());
+        paramMap.put("size", item.getSize());
+        paramMap.put("color", item.getColor());
         
         int curQty = itemQuantity(item);
         System.out.println("curQty = " + curQty);
@@ -66,8 +66,8 @@ public  class CartRepository {
                     INSERT INTO cart_items (product_id, title, color, size, quantity, preview_image)
                     VALUES ((:pid), (:title), (:color), (:size), 1, (:img));
                     """ + lowerStockSql;
-            paramMap.put("title", item.title);
-            paramMap.put("img", item.previewImage);
+            paramMap.put("title", item.getTitle());
+            paramMap.put("img", item.getPreviewImage());
         }
         else if (curQty == 0)
             return -2; // edge case, item in cart has qty 0
@@ -97,9 +97,9 @@ public  class CartRepository {
                     WHERE product_id = (:pid) AND color_name = (:color) AND size = (:size));
                 """;
         Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("pid", item.productId);
-        paramMap.put("size", item.size);
-        paramMap.put("color", item.color);
+        paramMap.put("pid", item.getProductId());
+        paramMap.put("size", item.getSize());
+        paramMap.put("color", item.getColor());
         
         int curQty = itemQuantity(item);
         String sql;
@@ -146,10 +146,10 @@ public  class CartRepository {
                     	WHERE product_id = (:pid) AND size = (:size) AND color_name = (:color));
                     """ : "");
             Map<String, Object> paramMap = new HashMap<>();
-            paramMap.put("pid", item.productId);
-            paramMap.put("size", item.size);
-            paramMap.put("color", item.color);
-            paramMap.put("quantity", item.quantity);
+            paramMap.put("pid", item.getProductId());
+            paramMap.put("size", item.getSize());
+            paramMap.put("color", item.getColor());
+            paramMap.put("quantity", item.getQuantity());
             int res = new NamedParameterJdbcTemplate(jdbcTemplate).update(sql, paramMap);
             System.out.println("res = " + res);
         }
@@ -163,8 +163,8 @@ public  class CartRepository {
                 FROM cart_items
                 WHERE product_id = ? AND color = ? AND size = ?
                 """;
-        List<Integer> quantityList = jdbcTemplate.query(sql, rm, item.productId,
-                                                          item.color, item.size);
+        List<Integer> quantityList = jdbcTemplate.query(sql, rm, item.getProductId(),
+                                                          item.getColor(), item.getSize());
         return quantityList.size() > 0 ? quantityList.get(0) : -10;
     }
 }

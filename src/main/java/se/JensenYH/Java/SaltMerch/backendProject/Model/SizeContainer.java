@@ -1,13 +1,8 @@
 package se.JensenYH.Java.SaltMerch.backendProject.Model;
 
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public class SizeContainer {
-    @JsonProperty
-    public String size;
-    @JsonProperty
-    public int stock;
+    private String size;
+    private int stock;
 
     public SizeContainer() {
     }
@@ -16,13 +11,22 @@ public class SizeContainer {
         this.size = size;
         this.stock = stock;
     }
+    //<editor-fold defaultstate="collapsed" desc="Getters and Setters">
 
+    public String getSize() {
+        return size;
+    }
 
-// todo: needs fields: String size, int stock
+    public void setSize(String size) {
+        this.size = size;
+    }
 
-    // todo: all fields should be public and annotated with @JsonProperty
+    public int getStock() {
+        return stock;
+    }
 
-    // todo: needs 2 constructors:
-    //  1. empty constructor
-    //  2. constructor with size and stock
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
+    //</editor-fold>
 }

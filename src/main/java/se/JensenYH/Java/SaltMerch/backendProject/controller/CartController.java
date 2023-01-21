@@ -18,24 +18,24 @@ public class CartController {
 
 
     @GetMapping("/selectall")
-    public List<CartItem> selectAllIteams(CartItem item) {
+    public List<CartItem> getCartContents(CartItem item) {
         return cartService.selectAllItems();
     }
 
 
     //Almost done
-    @PatchMapping ("/cartss/{id}{action}")
+    @PatchMapping("/cartss/{id}{action}")
     ///problem /Cannot convert value of type 'java.lang.String' to required type
-    public ResponseEntity<Integer>  removeOrAdd(@PathVariable int id,
-                                                       @RequestParam ("action") CartItem action ) {
+    public ResponseEntity<Integer> removeOrAdd(@PathVariable int id,
+                                               @RequestParam("action") CartItem action) {
 
 
-            if (action.equals("remove")) {
-                return ResponseEntity.ok(cartService.deleteOrDecrementItem(action));
+        if (action.equals("remove")) {
+            return ResponseEntity.ok(cartService.deleteOrDecrementItem(action));
 
-            } else if (action.equals("add")) {
-                return ResponseEntity.ok(cartService.insertOrIncrementItem(action));
-            }
+        } else if (action.equals("add")) {
+            return ResponseEntity.ok(cartService.insertOrIncrementItem(action));
+        }
 
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
@@ -43,16 +43,15 @@ public class CartController {
 
     @DeleteMapping("/carts/{id}{buyout}")
     //DELETE /api/v1/carts/{id}?buyout=true
-    public  void reStockIteam(@PathVariable long id,
-                                          @RequestParam("buyout") boolean buyout, CartItem item){
+    public void reStockIteam(@PathVariable long id,
+                             @RequestParam("buyout") boolean buyout, CartItem item) {
 
-        if (buyout == true){
+        if (buyout) {
             cartService.deletAllIteams(buyout);
             System.out.println("completed");
-        }else {
+        } else {
             cartService.deleteOrDecrementItem(item);
             System.out.println("test");
         }
-
     }
 }

@@ -22,8 +22,6 @@ public class ProductRepository{
     // NOTE: LEAVE THIS RECORD AS IT IS!
     private record VariantWImages(int id, String colorName, String imagesCsv) {}
     
-    
-    
     /** Only calls selectAll(String category) with a null category;
      * Useful for reading ALL products, regardless of category. */
     public List<Product> selectAll()
@@ -31,24 +29,11 @@ public class ProductRepository{
         return selectAll(null);
     }
 
-
-    //Done 2
-    // todo: this method needs you to write its SQL query
-    /** Reads all rows from the products table and returns them as a List of Products. */
     public List<Product> selectAll(String category) {
-        // todo: write an SQL query that only selects all rows from the products table
-        String sql = "SELECT * FROM products";// <<<< todo: WRITE SQL QUERY HERE
-        
-        
-        
-        // NOTE: leave this line as it is!
+        String sql = "SELECT * FROM products";
+
         if (category != null) sql += " WHERE category = (:category)";
-        
-        
-        
-        // todo: create a RowMapper for the Product class,
-        //  using the constructor that takes id, category, title, description, and previewImage
-        // NOTE: have in mind that the column name that corresponds to previewImage is preview_image
+
         RowMapper<Product> rm = (rs,rowNum) -> new Product(
                 rs.getInt("id"),
                 rs.getString("category"),
@@ -56,89 +41,80 @@ public class ProductRepository{
                 rs.getString("description"),
                 rs.getString("preview_image"));
 
-        // NOTE: leave the rest as it is!
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("category", category);
         return new NamedParameterJdbcTemplate(jdbcTemplate).query(sql, paramMap, rm);
     }
-    
-    /** Only calls selectAll(String category) with a specific category.
-     * Useful for reading all products of a specific category. */
+
     public List<Product> selectAllOfCategory(String category)
     {
         return selectAll(category);
     }
-    
-    // NOTE: NO NEED TO MODIFY THIS METHOD!
-    /** Inserts a new product in the database, together with its
-     *      variants, including images and sizes. It takes a
-     *      Product parameter containing everything. */
+
     public Product insertProductAndProps(Product prod, String category) {
         var sql = """
                 INSERT INTO products (category, title, description, preview_image)
                 VALUES (?, ?, ?, ?) RETURNING id;""";
         RowMapper<Integer> rm = (rs, rowNum) -> rs.getInt("id");
-        List<Integer> pids = jdbcTemplate.query(sql, rm, category, prod.title,
-                                                 prod.description, prod.previewImage);
+        List<Integer> pids = jdbcTemplate.query(sql, rm, category, prod.getTitle(),
+                                                 prod.getDescription(), prod.getPreviewImage());
         int pid = pids.size() > 0 ? pids.get(0) : -1;
         
         Product newProd = null;
         if (pid > -1) {
             newProd = new Product();
-            newProd.id = pid;
-            newProd.catagory = category;
-            newProd.title = prod.title;
-            newProd.description = prod.description;
-            newProd.previewImage = prod.previewImage;
+            newProd.setId(pid);
+            newProd.setCatagory(category);
+            newProd.setTitle(prod.getTitle());
+            newProd.setDescription(prod.getDescription());
+            newProd.setPreviewImage(prod.getPreviewImage());
 
-            for (ColorVariant v : prod.colorVariants) {
+            for (ColorVariant v : prod.getColorVariants()) {
                 ColorVariant newColorVariant = new ColorVariant();
                 RowMapper<Integer> rmv = (rs, rowNum) -> rs.getInt("id");
                 var sqlv = """
                         INSERT INTO variants (color_name, product_id) VALUES (?, ?) RETURNING id;""";
-                List<Integer> vids = jdbcTemplate.query(sqlv, rmv, v.colorName, pid);
+                List<Integer> vids = jdbcTemplate.query(sqlv, rmv, v.getColorName(), pid);
                 int vid = vids.size() > 0 ? vids.get(0) : -1;
 
                 if (vid > -1)
                 {
-                    newColorVariant.colorName = v.colorName;
+                    newColorVariant.setColorName(v.getColorName());
 
-                    for (String url : v.images) {
+                    for (String url : v.getImages()) {
                         var sqli = """
                                 INSERT INTO images (url, variant_id) VALUES (?, ?);""";
                         int ires = jdbcTemplate.update(sqli, url, vid);
                         if (ires == 1)
-                            newColorVariant.images.add(url);
+                            newColorVariant.getImages().add(url);
                     }
-                    for (SizeContainer s : v.size)
+                    for (SizeContainer s : v.getSizes())
                     {
                         var sqls = """
                                 INSERT INTO sizes (size, stock, variant_id) VALUES (?, ?, ?);""";
-                        int sres = jdbcTemplate.update(sqls, s.size, s.stock, vid);
+                        int sres = jdbcTemplate.update(sqls, s.getSize(), s.getStock(), vid);
                         if (sres == 1)
-                            newColorVariant.size.add(s);
+                            newColorVariant.getSizes().add(s);
                     }
-                    newProd.colorVariants.add(newColorVariant);
+                    newProd.getColorVariants().add(newColorVariant);
                 }
             }
         }
         return newProd;
     }
     
-    // NOTE: NO NEED TO MODIFY THIS METHOD!
-    /** Updates a specific row in the products table
-     *  (only its title, description, and preview_image). */
+
     public int updateProductMeta(int id, Product prod) {
         Product oldProd = getProductBase(id);
         if (oldProd == null)
             return -9;
         else {
-            String title = prod.title != null && !prod.title.isEmpty()
-                    ? prod.title : oldProd.title;
-            String desc = prod.description != null && !prod.description.isEmpty()
-                    ? prod.description : oldProd.description;
-            String img = prod.previewImage != null && !prod.previewImage.isEmpty()
-                    ? prod.previewImage : oldProd.previewImage;
+            String title = prod.getTitle() != null && !prod.getTitle().isEmpty()
+                    ? prod.getTitle() : oldProd.getTitle();
+            String desc = prod.getDescription() != null && !prod.getDescription().isEmpty()
+                    ? prod.getDescription() : oldProd.getDescription();
+            String img = prod.getPreviewImage() != null && !prod.getPreviewImage().isEmpty()
+                    ? prod.getPreviewImage() : oldProd.getPreviewImage();
             var sql = """
                     UPDATE products
                     SET title = ?, description = ?, preview_image = ?
@@ -147,8 +123,7 @@ public class ProductRepository{
         }
     }
     
-    // todo: this method needs you to write its SQL query and execute it
-    // NOTE: optional
+
     /**
      * Deletes a specific row from the products table.
      */
@@ -157,16 +132,11 @@ public class ProductRepository{
         var sql = """
                 DELETE FROM products
                 WHERE id = ?
-                """;// <<<< todo: WRITE SQL QUERY HERE
-        
-        
-        // todo: execute the query while also passing the id as a parameter
-
-
+                """;
         return jdbcTemplate.update(sql, id);// <<<< todo: call jdbcTemplate method here
     }
     
-    // NOTE: NO NEED TO MODIFY THIS METHOD!
+
     /** Reads rows from products, variants, images, and sizes,
      * constructs ONE Product object from them, and returns it. */
     public Product getEntireProduct(int productId) {
@@ -179,23 +149,22 @@ public class ProductRepository{
         System.out.println("variantsWImages = " + variantsWImages);
         for (VariantWImages variantWImages : variantsWImages) {
             ColorVariant colorVariant = new ColorVariant();
-            colorVariant.colorName = variantWImages.colorName;
-            colorVariant.size = getVariantSizes(variantWImages.id);
+            colorVariant.setColorName(variantWImages.colorName);
+            colorVariant.setSizes(getVariantSizes(variantWImages.id));
             try {
                 colorVariant.setImagesFromCSV(variantWImages.imagesCsv);
             }
             catch (Exception e) {
-                colorVariant.images = new ArrayList<>();
+                colorVariant.setImages(new ArrayList<>());
                 System.out.println("Exception parsing images from csv; see stack trace");
                 e.printStackTrace();
             }
-            product.colorVariants.add(colorVariant);
+            product.getColorVariants().add(colorVariant);
         }
         
         return product;
     }
-    
-    // NOTE: NO NEED TO MODIFY THIS METHOD!
+
     /** Utility method used in getEntireProduct().
      *      Reads rows from variants and images tables. */
     public List<VariantWImages> getVariantsAndImages(int productId) {
@@ -214,8 +183,7 @@ public class ProductRepository{
                 rs.getString("images"));
         return jdbcTemplate.query(sql, rm, productId);
     }
-    
-    // NOTE: NO NEED TO MODIFY THIS METHOD!
+
     /** Utility method used in getEntireProduct().
      *      Reads a row from sizes table. */
     public List<SizeContainer> getVariantSizes(int variantId) {
@@ -232,50 +200,51 @@ public class ProductRepository{
         return jdbcTemplate.query(sql, rm, variantId);
     }
     
-    // NOTE: NO NEED TO MODIFY THIS METHOD!
+
     /** Inserts rows into variants, images, and sizes,
      * thus creating a new variant for a specific product. */
     public ColorVariant addVariant(int productId, ColorVariant colorVariant) {
-        ColorVariant newColorVariant = new ColorVariant();
+        ColorVariant newv = new ColorVariant();
         RowMapper<Integer> rmv = (rs, rowNum) -> rs.getInt("id");
         var sqlv = """
                 INSERT INTO variants (color_name, product_id) VALUES (?, ?) RETURNING id;""";
-        List<Integer> vids = jdbcTemplate.query(sqlv, rmv, colorVariant.colorName, productId);
+        List<Integer> vids = jdbcTemplate.query(sqlv, rmv, colorVariant.getColorName(), productId);
         int vid = vids.size() > 0 ? vids.get(0) : -1;
-        if (vid > -1) {
-            newColorVariant.colorName = colorVariant.colorName;
 
-            for (String url : colorVariant.images) {
+        if (vid > -1)
+        {
+            newv.setColorName(colorVariant.getColorName());
+            for (String url : colorVariant.getImages())
+            {
                 var sqli = "INSERT INTO images (url, variant_id) VALUES (?, ?);";
                 int ires = jdbcTemplate.update(sqli, url, vid);
                 if (ires == 1)
-                    newColorVariant.images.add(url);
+                    newv.getImages().add(url);
             }
-            for (SizeContainer s : colorVariant.size) {
-                var sqls = "INSERT INTO sizes (sizes, stock, variant_id) VALUES (?, ?, ?);";
-                int sres = jdbcTemplate.update(sqls, s.size, s.stock, vid);
+            for (SizeContainer s : colorVariant.getSizes())
+            {
+                var sqls = "INSERT INTO sizes (size, stock, variant_id) VALUES (?, ?, ?);";
+                int sres = jdbcTemplate.update(sqls, s.getSize(), s.getStock(), vid);
                 if (sres == 1)
-                    newColorVariant.size.add(s);
+                    newv.getSizes().add(s);
             }
         }
-        return newColorVariant;
+        return newv;
     }
     
-    // todo: this method needs you to write its SQL query
-    // NOTE: optional
+
     /** Delete a specific row from variants. */
     public int deleteVariant(int productId, String color) {
         // todo: write the SQL query for deleting a variant
         //  with specific product_id and color_name
-        var sql = "DELETE FROM variants WHERE id  ? AND color  = ?";;// <<<< todo: WRITE SQL QUERY HERE
+        var sql = "DELETE FROM variants WHERE id = ? AND color_name = ?";;// <<<< todo: WRITE SQL QUERY HERE
     
     
         // todo: execute the query while also passing the id as a parameter
         return jdbcTemplate.update(sql, productId, color);// <<<< todo: call jdbcTemplate method here
     }
     
-    // NOTE: the endpoint that's supposed to use this method is OPTIONAL!
-    // NOTE: NO NEED TO MODIFY THIS METHOD!
+
     /** Restocks a specific product variant, i.e.
      *      adds a certain number to its stock. */
     public int restockSize(int productId, String size, String color, int qty) {
@@ -292,7 +261,7 @@ public class ProductRepository{
     // NOTE: NO NEED TO MODIFY THIS METHOD!
     /** Utility function used in other methods.
      *      Only reads a product's metadata. */
-    public Product getProductBase(int productId) {
+    private Product getProductBase(int productId) {
         RowMapper<Product> rm = (rs, rowNum) -> new Product(
                 rs.getInt("id"),
                 rs.getString("category"),

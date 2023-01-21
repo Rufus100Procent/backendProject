@@ -19,12 +19,10 @@ public class ProductService {
 
     private List<Product> productList;
 
-    //done
     public List<Product> selectAll(){
         return productRepository.selectAll();
     }
 
-    //done
     public List<Product> selectAll(String category){
 
         if (category != null && !category.isEmpty()) {
@@ -34,12 +32,10 @@ public class ProductService {
 
     }
 
-
     public List<Product> selectAllOfCategory(String category){
         return productRepository.selectAllOfCategory(category);
 
     }
-
         public Product insertProductAndProps(Product prod, String category){
         return productRepository.insertProductAndProps(prod,category);
     }
@@ -53,14 +49,9 @@ public class ProductService {
     public ColorVariant addvarient(int productId, ColorVariant colorVariant){
         return productRepository.addVariant(productId, colorVariant);
     }
-    public Product getProductbse(int productId, Product product){
-        return productRepository.getProductBase(productId);
-    }
-
     public int deleteVariant(int productId, String color) {
         return productRepository.deleteVariant(productId, color);
     }
-
 
     public int deleteProduct(int id){
        return productRepository.deleteProduct(id);
@@ -75,6 +66,5 @@ public class ProductService {
     }
 
     private record VariantWImages(int id, String colorName, String imagesCsv) {}
-
 
 }

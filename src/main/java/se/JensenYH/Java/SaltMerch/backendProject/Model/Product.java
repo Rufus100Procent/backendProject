@@ -1,25 +1,16 @@
 package se.JensenYH.Java.SaltMerch.backendProject.Model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Product implements Serializable {
-
-    @JsonProperty
-    public int id;
-    @JsonProperty
-    public String catagory;
-    @JsonProperty
-    public String title;
-    @JsonProperty
-    public String description;
-    @JsonProperty
-    public String previewImage;
-    @JsonProperty
-    public List<ColorVariant> colorVariants;
+    private int id;
+    private String catagory;
+    private String title;
+    private String description;
+    private String previewImage;
+    private List<ColorVariant> colorVariants;
 
     public Product() {
         colorVariants = new ArrayList<>();
@@ -41,13 +32,57 @@ public class Product implements Serializable {
         this.description = description;
         this.colorVariants = colorVariants;
     }
-// todo: needs fields: int id, String category, String title, String description, String previewImage, and List of ColorVariant colorVariants
 
-    // todo: all fields should be public and annotated with @JsonProperty
 
-    // todo: needs 3 constructors:
-    //  1. empty constructor: this one only initializes colorVariants to new ArrayList<>()
-    //  2. constructor with id, category, title, description, and previewImage: this one initializes colorVariants to new ArrayList<>()
-    //  3. constructor with id, category, title, description, colorVariants
+    //<editor-fold defaultstate="collapsed" desc="Getters and Setters">
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getCatagory() {
+        return catagory;
+    }
+
+    public void setCatagory(String catagory) {
+        this.catagory = catagory;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getPreviewImage() {
+        return previewImage;
+    }
+
+    public void setPreviewImage(String previewImage) {
+        this.previewImage = previewImage;
+    }
+
+    public List<ColorVariant> getColorVariants() {
+        return colorVariants;
+    }
+
+    public void setColorVariants(List<ColorVariant> colorVariants) {
+        this.colorVariants = colorVariants;
+    }
+    //</editor-fold>
 }
 
