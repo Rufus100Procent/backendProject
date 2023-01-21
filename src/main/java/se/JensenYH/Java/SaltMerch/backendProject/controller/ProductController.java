@@ -35,6 +35,12 @@ public class ProductController {
         return productService.selectAll();
     }
 
+    //Tested
+    @GetMapping("/hello")
+    public String hello() {
+        return "hello";
+    }
+
 
     ///working
     @GetMapping("/products/{var}")

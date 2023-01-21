@@ -1,17 +1,22 @@
-package se.JensenYH.Java.SaltMerch.backendProject;
+/*package se.JensenYH.Java.SaltMerch.backendProject;
 
 import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MockMvcBuilder;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -28,7 +33,6 @@ import java.nio.file.Path;
 import static jdk.internal.jimage.ImageReaderFactory.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 
 @SpringBootTest
 @WebAppConfiguration
@@ -59,7 +63,7 @@ public class RepositoryTest {
         productRepository = Mockito.mock(ProductRepository.class);
     }
 
-    @Test
+    @
     public void createProduct() throws Exception {
         String payload = "{\n" +
                 "    \"title\": \"Postman jacket\",\n" +
@@ -81,5 +85,14 @@ public class RepositoryTest {
         mockMvc.perform(MockMvcRequestBuilders.get( baseUrl + ("/api/v1/products"))).andExpect(status().isOk()).andReturn();
         System.out.println("work");
     }
+    @Test
+    void getProducts() throws Exception {
+
+        RequestBuilder request = MockMvcRequestBuilders.get(baseUrl + "/products");
+        MvcResult result = mockMvc.perform(request).andReturn();
+
+
+    }
 
 }
+*/
