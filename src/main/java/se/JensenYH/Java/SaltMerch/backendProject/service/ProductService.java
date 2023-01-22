@@ -25,9 +25,7 @@ public class ProductService {
         return productRepository.selectAll();
     }
 
-    public String hello(String stringer) {
-        return "hello" + stringer;
-    }
+
 
     public Object selectAllOfCategory(String var){
 

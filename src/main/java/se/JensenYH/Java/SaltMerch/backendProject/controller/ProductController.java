@@ -36,25 +36,21 @@ public class ProductController {
     }
 
     //Working
+    //Tested
     @GetMapping("/products")
     public List<Product> getAllProducts() {
         return productService.selectAll();
     }
 
+    //Working
     //Tested
-    @GetMapping("/hello{stringer}")
-    public String hello(@RequestParam("stringer") String stringer) {
-        return productService.hello("stringer");
-    }
-
-
-    ///working
     @GetMapping("/products/{var}")
     public Object getAllProductsCategory(@PathVariable("var") String var) {
         return productService.selectAllOfCategory(var);
     }
 
-    //working
+    //Working
+    //Tested
     @PostMapping("/products/{catagory}")
     public ResponseEntity<Product> createNewProduct(@RequestBody Product prod,
                                                     @PathVariable("catagory") String catagory) {
@@ -64,7 +60,8 @@ public class ProductController {
     }
 
 
-    //working
+    //Working
+    //Tested
     @PutMapping("/products/{id}")
     public ResponseEntity<Integer> specificSizeOfVariant(@PathVariable int id,
                                                          @RequestBody Product product) {
@@ -94,7 +91,8 @@ public class ProductController {
 
     }
 
-    //working
+    //Working
+    //Tested
     @DeleteMapping("/products/{id}")
     public ResponseEntity<Object> deleteProduct(@PathVariable("id") int id) {
 
