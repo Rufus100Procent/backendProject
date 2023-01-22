@@ -2,6 +2,8 @@ package se.JensenYH.Java.SaltMerch.backendProject.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import se.JensenYH.Java.SaltMerch.backendProject.Model.ColorVariant;
 import se.JensenYH.Java.SaltMerch.backendProject.Model.Product;
@@ -17,27 +19,45 @@ public class ProductService {
     @Autowired
     ProductRepository productRepository;
 
-    private List<Product> productList;
+
 
     public List<Product> selectAll(){
         return productRepository.selectAll();
     }
 
-    public List<Product> selectAll(String category){
+    public String hello(String stringer) {
+        return "hello" + stringer;
+    }
+
+    public Object selectAllOfCategory(String var){
+
+        if (var != null && !var.isEmpty()) {
+            switch (var) {
+                case "hats":
+                case "jackets":
+                case "tshirt":
+                case "bags":
+                    return productRepository.selectAll(var);
+                default:
+                    return productRepository.getEntireProduct(Integer.parseInt(var));
+            }
+        }
+        throw new RuntimeException("product with " + var + " doesnt exits");
+
+
+    }
+    public Product insertProductAndProps(Product prod, String category){
 
         if (category != null && !category.isEmpty()) {
-            return productRepository.selectAll(category);
+            switch (category){
+                case "hats":
+                case "jackets":
+                case "tshirt":
+                case "bags":
+                    return  productRepository.insertProductAndProps(prod, category);
+            }
         }
-        throw new RuntimeException("product with " + category + " doesnt exits");
-
-    }
-
-    public List<Product> selectAllOfCategory(String category){
-        return productRepository.selectAllOfCategory(category);
-
-    }
-        public Product insertProductAndProps(Product prod, String category){
-        return productRepository.insertProductAndProps(prod,category);
+            throw new RuntimeException("cant create " + category + " check your json");
     }
 
     public int updateProductMeta(int id, Product prod) {
@@ -57,14 +77,8 @@ public class ProductService {
        return productRepository.deleteProduct(id);
     }
 
-    public Product getEntireProduct(int productId){
-        return productRepository.getEntireProduct(productId);
-    }
-
     public int restockSize(int productId, String size, String color, int qty){
         return productRepository.restockSize(productId, size, color, qty);
     }
-
-    private record VariantWImages(int id, String colorName, String imagesCsv) {}
 
 }

@@ -16,6 +16,7 @@ public class CartController {
     @Autowired
     CartService cartService;
 
+    //working
     @GetMapping("/selectall")
     public List<CartItem> getCartContents() {
         return cartService.selectAllItems();
@@ -28,17 +29,16 @@ public class CartController {
     public ResponseEntity<Integer> removeOrAdd(@PathVariable int id,
                                                @RequestParam("action") CartItem action) {
 
-
         if (action.equals("remove")) {
             return ResponseEntity.ok(cartService.deleteOrDecrementItem(action));
 
         } else if (action.equals("add")) {
             return ResponseEntity.ok(cartService.insertOrIncrementItem(action));
         }
-
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+    //working
     @DeleteMapping("/carts/{id}{buyout}")
     //DELETE /api/v1/carts/{id}?buyout=true
     public void reStockIteam(@PathVariable long id,

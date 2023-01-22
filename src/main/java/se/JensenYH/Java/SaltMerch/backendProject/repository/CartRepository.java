@@ -44,39 +44,39 @@ public  class CartRepository {
     public int insertOrIncrementItem(CartItem item) {
         // lower stock once cart item is added
         var lowerStockSql = """
-                UPDATE sizes
+                UPDATE size
                 SET stock = stock - 1
                 WHERE id = (
-                    SELECT s.id FROM sizes AS s
+                    SELECT s.id FROM size AS s
                     INNER JOIN variants AS v
                     ON v.id = s.variant_id
-                    WHERE product_id = ? AND color = ? AND size = ? ;
+                    WHERE product_id = (:pid) AND color_name = (:color) AND size = (:size));
                 """;
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("pid", item.getProductId());
         paramMap.put("size", item.getSize());
         paramMap.put("color", item.getColor());
         
-        int curQty = itemQuantity(item);
-        System.out.println("curQty = " + curQty);
+        int quantity = itemQuantity(item);
+        System.out.println("quantity = " + quantity);
         String sql = "";
-        if (curQty < 0) {
+        if (quantity < 0) {
             // insert item with quantity 1
             sql = """
                     INSERT INTO cart_items (product_id, title, color, size, quantity, preview_image)
-                                       VALUES (?,?,?,?,?,?);
+                    VALUES ((:pid), (:title), (:color), (:size), 1, (:img));
                     """ + lowerStockSql;
             paramMap.put("title", item.getTitle());
             paramMap.put("img", item.getPreviewImage());
         }
-        else if (curQty == 0)
+        else if (quantity == 0)
             return -2; // edge case, item in cart has qty 0
         else {
             // increment quantity
             sql = """
                         UPDATE cart_items
                         SET quantity = quantity + 1
-                        WHERE product_id = ? AND color = ? AND size = ?;
+                        WHERE product_id = (:pid) AND color = (:color) AND size = (:size);
                     """ + lowerStockSql;
         }
         return new NamedParameterJdbcTemplate(jdbcTemplate).update(sql, paramMap);
@@ -88,29 +88,29 @@ public  class CartRepository {
     public int deleteOrDecrementItem(CartItem item) {
         // restock once cart item is removed
         var restockSql = """
-                UPDATE sizes
+                UPDATE size
                 SET stock = stock + 1
                 WHERE id = (
-                    SELECT s.id FROM sizes AS s
+                    SELECT s.id FROM size AS s
                     INNER JOIN variants AS v
                     ON v.id = s.variant_id
-                    WHERE product_id = ? AND color_name = ? AND size = ?;
+                    WHERE product_id = (:pid) AND color_name = (:color) AND size = (:size));
                 """;
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("pid", item.getProductId());
         paramMap.put("size", item.getSize());
         paramMap.put("color", item.getColor());
         
-        int curQty = itemQuantity(item);
+        int quantity = itemQuantity(item);
         String sql;
-        if (curQty < 0) {
+        if (quantity < 0) {
             return -2;
         }
-        else if (curQty < 2) {
+        else if (quantity < 2) {
             // delete the item
             sql = """
                     DELETE FROM cart_items
-                    WHERE product_id = ? AND color = ? AND size = ? ;
+                    WHERE product_id = (:pid) AND color = (:color) AND size = (:size);
                     """ + restockSql;
         }
         else {
@@ -118,7 +118,7 @@ public  class CartRepository {
             sql = """
                     UPDATE cart_items
                     SET quantity = quantity - 1
-                    WHERE product_id = ? AND color = ? AND size = ?;
+                    WHERE product_id = (:pid) AND color = (:color) AND size = (:size);
                     """ + restockSql;
         }
         return new NamedParameterJdbcTemplate(jdbcTemplate).update(sql, paramMap);
@@ -135,15 +135,15 @@ public  class CartRepository {
         for (CartItem item : cartItems) {
             var sql = """
                     DELETE FROM cart_items
-                    WHERE product_id = ? AND size = ? AND color = ?;
+                    WHERE product_id = (:pid) AND size = (:size) AND color = (:color);
                     """ + (restock ? """
-                    UPDATE sizes
-                    SET stock = stock + (:qty)
+                    UPDATE size
+                    SET stock = stock + (:quantity)
                     WHERE id = (
-                    	SELECT s.id FROM sizes AS s
+                    	SELECT s.id FROM size AS s
                     	INNER JOIN variants AS v
                     	ON v.id = s.variant_id
-                    	WHERE product_id = ? AND size = ? AND color_name = ? ;
+                    	WHERE product_id = (:pid) AND size = (:size) AND color_name = (:color));
                     """ : "");
             Map<String, Object> paramMap = new HashMap<>();
             paramMap.put("pid", item.getProductId());
@@ -161,7 +161,7 @@ public  class CartRepository {
         var sql = """
                 SELECT quantity
                 FROM cart_items
-                WHERE product_id = ? AND color = ? AND size = ?
+                WHERE product_id = (:pid) AND color = (:color) AND size = (:size);
                 """;
         List<Integer> quantityList = jdbcTemplate.query(sql, rm, item.getProductId(),
                                                           item.getColor(), item.getSize());

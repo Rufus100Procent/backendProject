@@ -26,10 +26,10 @@ public class CartService {
     }
 
     public int deleteOrDecrementItem(CartItem item) {
+
       return dB.deleteOrDecrementItem(item);
     }
     public void deletAllIteams(boolean buyout) {
-
         dB.deleteAllItems(buyout);
     }
 }

@@ -28,6 +28,12 @@ public class ProductController {
     @Autowired
     CartService cartService;
 
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
+
+    public ProductController() {
+    }
 
     //Working
     @GetMapping("/products")
@@ -36,29 +42,16 @@ public class ProductController {
     }
 
     //Tested
-    @GetMapping("/hello")
-    public String hello() {
-        return "hello";
+    @GetMapping("/hello{stringer}")
+    public String hello(@RequestParam("stringer") String stringer) {
+        return productService.hello("stringer");
     }
 
 
     ///working
     @GetMapping("/products/{var}")
     public Object getAllProductsCategory(@PathVariable("var") String var) {
-        switch (var) {
-            case "hats":
-
-            case "jackets":
-
-            case "tshirt":
-
-            case "bags":
-
-                return productService.selectAll(var);
-
-            default:
-                return productService.getEntireProduct(Integer.parseInt(var));
-        }
+        return productService.selectAllOfCategory(var);
     }
 
     //working
@@ -66,12 +59,8 @@ public class ProductController {
     public ResponseEntity<Product> createNewProduct(@RequestBody Product prod,
                                                     @PathVariable("catagory") String catagory) {
 
-        Product obj = productService.insertProductAndProps(prod, catagory);
-        if (catagory != null && !catagory.isEmpty()) {
-            return new ResponseEntity<>(obj, HttpStatus.CREATED);
-        } else {
-            throw new RuntimeException("cant create " + catagory + " check your json");
-        }
+        Product createProdect = productService.insertProductAndProps(prod, catagory);
+        return ResponseEntity.ok(createProdect);
     }
 
 
