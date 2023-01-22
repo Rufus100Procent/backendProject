@@ -11,6 +11,7 @@ public class SizeContainer {
         this.size = size;
         this.stock = stock;
     }
+    //prefere to use getters and setters
     //<editor-fold defaultstate="collapsed" desc="Getters and Setters">
 
     public String getSize() {

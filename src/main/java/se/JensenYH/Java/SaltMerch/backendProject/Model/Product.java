@@ -33,7 +33,7 @@ public class Product implements Serializable {
         this.colorVariants = colorVariants;
     }
 
-
+    //prefere to use getters and setters
     //<editor-fold defaultstate="collapsed" desc="Getters and Setters">
 
     public int getId() {

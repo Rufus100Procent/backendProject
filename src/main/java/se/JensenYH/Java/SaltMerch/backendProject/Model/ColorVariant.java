@@ -24,7 +24,7 @@ public class ColorVariant {
         images = new ArrayList<>(Arrays.asList(csv.split(",")));
     }
 
-
+    //prefere to use getters and setters
     //<editor-fold defaultstate="collapsed" desc="Getters and Setters">
     public String getColorName() {
         return colorName;

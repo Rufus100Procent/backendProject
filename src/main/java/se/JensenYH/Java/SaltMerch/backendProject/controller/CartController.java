@@ -16,15 +16,14 @@ public class CartController {
     @Autowired
     CartService cartService;
 
-
     @GetMapping("/selectall")
-    public List<CartItem> getCartContents(CartItem item) {
+    public List<CartItem> getCartContents() {
         return cartService.selectAllItems();
     }
 
 
     //Almost done
-    @PatchMapping("/cartss/{id}{action}")
+    @PatchMapping("/carts/{id}{action}")
     ///problem /Cannot convert value of type 'java.lang.String' to required type
     public ResponseEntity<Integer> removeOrAdd(@PathVariable int id,
                                                @RequestParam("action") CartItem action) {
@@ -39,7 +38,6 @@ public class CartController {
 
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
-
 
     @DeleteMapping("/carts/{id}{buyout}")
     //DELETE /api/v1/carts/{id}?buyout=true

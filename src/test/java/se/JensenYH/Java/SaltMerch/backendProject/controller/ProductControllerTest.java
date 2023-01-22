@@ -91,7 +91,6 @@ class ProductControllerTest extends PlaceHoldersForTest {
             cartRepository = Mockito.mock(CartRepository.class);
             productRepository = Mockito.mock(ProductRepository.class);
 
-
         }
 
         @Test

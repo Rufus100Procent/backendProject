@@ -50,7 +50,7 @@ public  class CartRepository {
                     SELECT s.id FROM sizes AS s
                     INNER JOIN variants AS v
                     ON v.id = s.variant_id
-                    WHERE product_id = (:pid) AND color_name = (:color) AND size = (:size));
+                    WHERE product_id = ? AND color = ? AND size = ? ;
                 """;
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("pid", item.getProductId());
@@ -64,7 +64,7 @@ public  class CartRepository {
             // insert item with quantity 1
             sql = """
                     INSERT INTO cart_items (product_id, title, color, size, quantity, preview_image)
-                    VALUES ((:pid), (:title), (:color), (:size), 1, (:img));
+                                       VALUES (?,?,?,?,?,?);
                     """ + lowerStockSql;
             paramMap.put("title", item.getTitle());
             paramMap.put("img", item.getPreviewImage());
@@ -76,7 +76,7 @@ public  class CartRepository {
             sql = """
                         UPDATE cart_items
                         SET quantity = quantity + 1
-                        WHERE product_id = (:pid) AND color = (:color) AND size = (:size);
+                        WHERE product_id = ? AND color = ? AND size = ?;
                     """ + lowerStockSql;
         }
         return new NamedParameterJdbcTemplate(jdbcTemplate).update(sql, paramMap);
@@ -94,7 +94,7 @@ public  class CartRepository {
                     SELECT s.id FROM sizes AS s
                     INNER JOIN variants AS v
                     ON v.id = s.variant_id
-                    WHERE product_id = (:pid) AND color_name = (:color) AND size = (:size));
+                    WHERE product_id = ? AND color_name = ? AND size = ?;
                 """;
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("pid", item.getProductId());
@@ -110,7 +110,7 @@ public  class CartRepository {
             // delete the item
             sql = """
                     DELETE FROM cart_items
-                    WHERE product_id = (:pid) AND color = (:color) AND size = (:size);
+                    WHERE product_id = ? AND color = ? AND size = ? ;
                     """ + restockSql;
         }
         else {
@@ -118,7 +118,7 @@ public  class CartRepository {
             sql = """
                     UPDATE cart_items
                     SET quantity = quantity - 1
-                    WHERE product_id = (:pid) AND color = (:color) AND size = (:size);
+                    WHERE product_id = ? AND color = ? AND size = ?;
                     """ + restockSql;
         }
         return new NamedParameterJdbcTemplate(jdbcTemplate).update(sql, paramMap);
@@ -135,7 +135,7 @@ public  class CartRepository {
         for (CartItem item : cartItems) {
             var sql = """
                     DELETE FROM cart_items
-                    WHERE product_id = (:pid) AND size = (:size) AND color = (:color);
+                    WHERE product_id = ? AND size = ? AND color = ?;
                     """ + (restock ? """
                     UPDATE sizes
                     SET stock = stock + (:qty)
@@ -143,7 +143,7 @@ public  class CartRepository {
                     	SELECT s.id FROM sizes AS s
                     	INNER JOIN variants AS v
                     	ON v.id = s.variant_id
-                    	WHERE product_id = (:pid) AND size = (:size) AND color_name = (:color));
+                    	WHERE product_id = ? AND size = ? AND color_name = ? ;
                     """ : "");
             Map<String, Object> paramMap = new HashMap<>();
             paramMap.put("pid", item.getProductId());
