@@ -19,15 +19,13 @@ public class ProductService {
     @Autowired
     ProductRepository productRepository;
 
-
-
     public List<Product> selectAll(){
         return productRepository.selectAll();
     }
 
 
 
-    public Object selectAllOfCategory(String var){
+    public Object selectAllOfCategory(String var) {
 
         if (var != null && !var.isEmpty()) {
             switch (var) {
@@ -44,7 +42,7 @@ public class ProductService {
 
 
     }
-    public Product insertProductAndProps(Product prod, String category){
+    public Product insertProductAndProps(Product prod, String category) {
 
         if (category != null && !category.isEmpty()) {
             switch (category){
@@ -64,7 +62,7 @@ public class ProductService {
 
     }
 
-    public ColorVariant addvarient(int productId, ColorVariant colorVariant){
+    public ColorVariant addvarient(int productId, ColorVariant colorVariant) {
         return productRepository.addVariant(productId, colorVariant);
     }
     public int deleteVariant(int productId, String color) {

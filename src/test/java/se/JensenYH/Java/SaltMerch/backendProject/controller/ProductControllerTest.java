@@ -1,12 +1,14 @@
 package se.JensenYH.Java.SaltMerch.backendProject.controller;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import se.JensenYH.Java.SaltMerch.backendProject.service.ProductService;
 
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -18,7 +20,6 @@ class ProductControllerTest extends ContextTest{
 
     @Autowired
     private MockMvc mockMvc;
-
 
     //working
     @Test
@@ -63,6 +64,7 @@ class ProductControllerTest extends ContextTest{
     //?????
     @Test
     public void updateProduct() throws Exception{
+
         final String id = "7";
         String payload = "{\n" +
                 "    \"title\": \"Postman jacket\",\n" +

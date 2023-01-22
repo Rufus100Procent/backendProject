@@ -24,8 +24,7 @@ public class ProductRepository{
     
     /** Only calls selectAll(String category) with a null category;
      * Useful for reading ALL products, regardless of category. */
-    public List<Product> selectAll()
-    {
+    public List<Product> selectAll() {
         return selectAll(null);
     }
 
@@ -77,8 +76,7 @@ public class ProductRepository{
                 List<Integer> vids = jdbcTemplate.query(sqlv, rmv, v.getColorName(), pid);
                 int vid = vids.size() > 0 ? vids.get(0) : -1;
 
-                if (vid > -1)
-                {
+                if (vid > -1) {
                     newColorVariant.setColorName(v.getColorName());
 
                     for (String url : v.getImages()) {
@@ -88,8 +86,7 @@ public class ProductRepository{
                         if (ires == 1)
                             newColorVariant.getImages().add(url);
                     }
-                    for (SizeContainer s : v.getSizes())
-                    {
+                    for (SizeContainer s : v.getSizes()) {
                         var sqls = """
                                 INSERT INTO sizes (size, stock, variant_id) VALUES (?, ?, ?);""";
                         int sres = jdbcTemplate.update(sqls, s.getSize(), s.getStock(), vid);
@@ -211,18 +208,15 @@ public class ProductRepository{
         List<Integer> vids = jdbcTemplate.query(sqlv, rmv, colorVariant.getColorName(), productId);
         int vid = vids.size() > 0 ? vids.get(0) : -1;
 
-        if (vid > -1)
-        {
+        if (vid > -1) {
             newv.setColorName(colorVariant.getColorName());
-            for (String url : colorVariant.getImages())
-            {
+            for (String url : colorVariant.getImages()) {
                 var sqli = "INSERT INTO images (url, variant_id) VALUES (?, ?);";
                 int ires = jdbcTemplate.update(sqli, url, vid);
                 if (ires == 1)
                     newv.getImages().add(url);
             }
-            for (SizeContainer s : colorVariant.getSizes())
-            {
+            for (SizeContainer s : colorVariant.getSizes()) {
                 var sqls = "INSERT INTO sizes (size, stock, variant_id) VALUES (?, ?, ?);";
                 int sres = jdbcTemplate.update(sqls, s.getSize(), s.getStock(), vid);
                 if (sres == 1)
