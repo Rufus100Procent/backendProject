@@ -1,0 +1,12 @@
+/home/stykle/project-assignment-1-database-backend-and-frontend/backend/src/main/java/se/JensenYH/Java/SaltMerch/backendProject/repository/ProductRepository.java
+/home/stykle/project-assignment-1-database-backend-and-frontend/backend/src/main/java/se/JensenYH/Java/SaltMerch/backendProject/service/ProductService.java
+/home/stykle/project-assignment-1-database-backend-and-frontend/backend/src/main/java/se/JensenYH/Java/SaltMerch/backendProject/Model/Product.java
+/home/stykle/project-assignment-1-database-backend-and-frontend/backend/src/main/java/se/JensenYH/Java/SaltMerch/backendProject/controller/ProductController.java
+/home/stykle/project-assignment-1-database-backend-and-frontend/backend/src/main/java/se/JensenYH/Java/SaltMerch/backendProject/Model/VariantWImages.java
+/home/stykle/project-assignment-1-database-backend-and-frontend/backend/src/main/java/se/JensenYH/Java/SaltMerch/backendProject/service/CartService.java
+/home/stykle/project-assignment-1-database-backend-and-frontend/backend/src/main/java/se/JensenYH/Java/SaltMerch/backendProject/repository/CartRepository.java
+/home/stykle/project-assignment-1-database-backend-and-frontend/backend/src/main/java/se/JensenYH/Java/SaltMerch/backendProject/controller/CartController.java
+/home/stykle/project-assignment-1-database-backend-and-frontend/backend/src/main/java/se/JensenYH/Java/SaltMerch/backendProject/Model/CartItem.java
+/home/stykle/project-assignment-1-database-backend-and-frontend/backend/src/main/java/se/JensenYH/Java/SaltMerch/backendProject/Main.java
+/home/stykle/project-assignment-1-database-backend-and-frontend/backend/src/main/java/se/JensenYH/Java/SaltMerch/backendProject/Model/ColorVariant.java
+/home/stykle/project-assignment-1-database-backend-and-frontend/backend/src/main/java/se/JensenYH/Java/SaltMerch/backendProject/Model/SizeContainer.java
