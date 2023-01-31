@@ -1,4 +1,8 @@
-FROM openjdk:19
-ADD target/backendProject-0.0.1-SNAPSHOT.jar app.jar
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+FROM tomcat:11.0.0-jdk17    
+WORKDIR /usr/local/tomcat/webapps
+COPY ./target/ROOT.war /usr/local/tomcat/webapps
+RUN apt-get update -y
+RUN apt-get -y install curl
+CMD ["catalina.sh", "run"]
+
 
